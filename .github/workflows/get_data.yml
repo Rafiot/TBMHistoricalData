@@ -32,7 +32,7 @@ jobs:
         run: poetry run python process.py
 
       - name: Commit changes
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@v11
         with:
           default_author: github_actor
           message: 'Update occupancy'
