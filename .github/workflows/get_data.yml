@@ -1,0 +1,39 @@
+name: get-data
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  push:
+    branches:
+    - main
+
+jobs:
+  run:
+    name: Update occupancy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Install poetry
+        run: pipx install poetry
+
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+          cache: 'poetry'
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - name: Fetch and process response
+        run: poetry run python process.py
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actor
+          message: 'Update occupancy'
+          add: 'data'
