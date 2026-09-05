@@ -2,9 +2,10 @@
 
 import json
 
-from datetime import datetime, date
+from datetime import datetime
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import requests
 
@@ -33,7 +34,8 @@ def get_data_stop(stop_id: str) -> dict[str, Any]:
 
 
 def run(stop_id):
-    today = date.today().isoformat()
+    # Make sure the dir name is sreated in the french TZ.
+    today = datetime.now(tz=ZoneInfo('Europe/Paris')).strftime("%Y-%m-%d")
     dump_dir = Path('data') / today
     dump_dir.mkdir(parents=True, exist_ok=True)
     dump_file = dump_dir / stop_id
