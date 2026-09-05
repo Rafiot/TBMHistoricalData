@@ -8,6 +8,8 @@ from typing import Any
 
 import requests
 
+from git import Repo
+
 
 def get_data_stop(stop_id: str) -> dict[str, Any]:
     r = requests.get('https://data.bordeaux-metropole.fr/geojson/process/saeiv_arret_passages',
@@ -47,6 +49,15 @@ def run(stop_id):
         json.dump(to_dump, f)
 
 
+def update_repo() -> None:
+    repo = Repo('./')
+    to_add = ['data']
+    repo.index.add(to_add)
+    repo.index.commit(f"Add data up to {datetime.now()}")
+    origin = repo.remote(name='origin')
+    origin.push()
+
+
 if __name__ == "__main__":
     to_capture = [
         "T_FLEURI_A",  # bois fleuri -> Downtown
@@ -64,3 +75,4 @@ if __name__ == "__main__":
     ]
     for stop_id in to_capture:
         run(stop_id)
+    update_repo()
