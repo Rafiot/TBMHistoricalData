@@ -45,10 +45,9 @@ def run(stop_id):
     else:
         old_data = {}
     cur_data = get_data_stop(stop_id)
-
     to_dump = old_data | cur_data
     with dump_file.open('w') as f:
-        json.dump(to_dump, f)
+        json.dump(dict(sorted(to_dump.items())), f)
 
 
 def update_repo() -> None:
