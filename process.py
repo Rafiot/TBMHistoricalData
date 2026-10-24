@@ -14,7 +14,8 @@ from git import Repo
 
 def get_data_stop(stop_id: str) -> dict[str, Any]:
     r = requests.get('https://data.bordeaux-metropole.fr/geojson/process/saeiv_arret_passages',
-                     params={'key': '258BILMNYZ', 'datainputs': json.dumps({'ARRET_ID': stop_id})})
+                     params={'key': '258BILMNYZ', 'datainputs': json.dumps({'ARRET_ID': stop_id})},
+                     timeout=30)
     r.raise_for_status()
     data = r.json()
     to_return = {}
